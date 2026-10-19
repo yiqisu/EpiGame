@@ -64,6 +64,20 @@
 \usepackage{algpseudocode}
 
 \newcommand{\model}{EpiGame}
+
+%% Float placement. The defaults reserve so much of each page for text that
+%% full-width appendix figures each claim a page of their own, leaving large
+%% gaps. These let floats pack together and share pages with text.
+\setcounter{topnumber}{4}
+\setcounter{bottomnumber}{3}
+\setcounter{totalnumber}{6}
+\setcounter{dbltopnumber}{4}
+\renewcommand{\topfraction}{0.95}
+\renewcommand{\bottomfraction}{0.9}
+\renewcommand{\textfraction}{0.05}
+\renewcommand{\floatpagefraction}{0.85}
+\renewcommand{\dbltopfraction}{0.95}
+\renewcommand{\dblfloatpagefraction}{0.85}
 \newcommand{\ys}[1]{\textcolor{red}{[YS: #1]}}
 \newcommand{\td}[1]{\textcolor{blue}{[TODO: #1]}}
 
@@ -969,7 +983,7 @@ These results highlight that equilibrium structure dominates the level of dishon
 
 \begin{figure*}[tp]
     \centering
-    \includegraphics[width=\textwidth, height=6cm]{figures/policy_partial_pooling_low}
+    \includegraphics[width=\textwidth, height=4.7cm]{figures/policy_partial_pooling_low}
     \caption{Comparison of adaptive and random policies under partial pooling with low initial behavioral rates, across epidemic dynamics, policy actions, signaling behavior, and utilities.}
     \label{fig:gov_policy_partial_low} %\vspace{-4mm}
 \end{figure*}
@@ -997,11 +1011,8 @@ Figure~\ref{fig:tolerance_contours} characterizes the maximum tolerable active-d
 \begin{figure}[tbp]
     \centering
     \includegraphics[width=\columnwidth]{figures/real_case.png}
-    \caption{{Real-world behavioral-state recovery and policy classification.}
-    (a) Reported and corrected coverage versus CDC records.
-    (b) Coverage error across baselines.
-    (c) \model{} component ablations.
-    (d) Coverage versus policy error. }
+    \caption{Real-world behavioral-state recovery and policy classification
+    on held-out CTIS--CDC county-weeks.}
     % Shading marks improved coverage estimation but worse policy classification than raw reports.
     % Error bars show $\pm1.96$ standard errors over 30 paired audit draws.}
     \label{fig:real_case}
@@ -1010,7 +1021,7 @@ Figure~\ref{fig:tolerance_contours} characterizes the maximum tolerable active-d
 
 % \paragraph{Real-world evidence supports strategic behavioral distortion modeling}
 \paragraph{Real-world evaluation supports policy-relevant behavioral inference}
-To examine whether real-world behavioral distortions exhibit the strategic structure assumed by \model{}, we evaluate CTIS self-reported vaccination against matched CDC adult administrative coverage across 10,039 county-weeks from 546 counties in 48 states. The 3,531 county-weeks after August 11, 2021 are held out, and only 25\% of training observations are audited. All methods use identical available inputs and splits, with ridge penalties selected on inner training splits. Correction reduces coverage bias from $+13.4$ to $-1.5$ percentage points (pp) and increases $R^2$ from $0.26$ to $0.59$ (Figure~\ref{fig:real_case}a). \model{} achieves the lowest coverage error at $5.09$ pp, compared with $13.99$ pp for raw reports and $8.69$ pp for the strongest alternative, random forest (Figure~\ref{fig:real_case}b). Removing the signaling component increases error to $12.01$ pp, while removing the SVEAIR consistency constraint increases it to $5.41$ pp (Figure~\ref{fig:real_case}c). Several corrections improve coverage estimates but worsen classification of $R_c>1$, whereas the coupled framework improves both outcomes under the common epidemiological mapping (Figure~\ref{fig:real_case}d). These results support integrating reporting correction with epidemiological structure for policy-relevant inference. 
+To examine whether real-world behavioral distortions exhibit the strategic structure assumed by \model{}, we evaluate CTIS self-reported vaccination against matched CDC adult administrative coverage across 10,039 county-weeks from 546 counties in 48 states. The 3,531 county-weeks after August 11, 2021 are held out, and only 25\% of training observations are audited. All methods use identical available inputs and splits, with ridge penalties selected on inner training splits. Correction reduces coverage bias from $+13.4$ to $-1.5$ percentage points (pp) and increases $R^2$ from $0.26$ to $0.59$ (Figure~\ref{fig:real_case}a). \model{} achieves the lowest coverage error at $5.09$ pp, compared with $13.99$ pp for raw reports and $8.69$ pp for the strongest alternative, random forest (Figure~\ref{fig:real_case}b). Removing the signaling component increases error to $12.01$ pp, while removing the SVEAIR consistency constraint increases it to $5.41$ pp (Figure~\ref{fig:real_case}c). Several corrections improve coverage estimates but worsen classification of $R_c>1$, whereas the coupled framework improves both outcomes under the common epidemiological mapping (Figure~\ref{fig:real_case}d). These results support integrating reporting correction with epidemiological structure for policy-relevant inference.  Figure~\ref{fig:real_case} reports (a) reported and corrected coverage against CDC records, (b) coverage error across baselines, (c) \model{} component ablations, and (d) coverage against policy error.
 
 \begin{table}[tbp]
 \centering
@@ -2008,8 +2019,42 @@ $T$ & Duration (weeks)
 
 
 \subsubsection{Real-world data}
+\label{supp:real-data}
 
-We evaluate the framework on real-world COVID-19 datasets. The CHECKED dataset contains 332 verified-false COVID-19 Weibo posts and 26,501 timestamped receiver actions. The CoAID dataset contains 166 false and 1,730 reliable COVID-19 items with associated tweets and replies. For receiver-side accuracy evaluation, we use an intervention dataset with 25,627 headline ratings collected from 855 randomized participants. For epidemic-state validation, we use CDC--HHS vaccination and hospitalization trajectories covering 52 U.S. states over 27 weeks and construct semi-synthetic reporting channels with controlled distortion mechanisms. Additional Germany, U.S. survey, and Gujarat audit datasets are included as supplementary validation cases.
+\paragraph{Primary evaluation panel.}
+Our core real-data evaluation pairs self-reported vaccination from the COVID-19 Trends
+and Impact Survey (CTIS) with administrative coverage published by the CDC
+\cite{sciadv.adj0266}. CTIS is a large daily survey run by the Delphi group at Carnegie
+Mellon in partnership with Meta, in which respondents report their own vaccination status;
+aggregates are distributed through the COVIDcast API
+(\url{https://delphi.cmu.edu/covidcast/}). We pair county-week CTIS estimates with CDC
+county-level administrative coverage on a matched adult denominator
+(\url{https://data.cdc.gov}), giving 10,039 county-weeks over 546 counties and 48 states
+for 26 weeks in 2021. CTIS supplies the report $m$ and CDC the independently measured
+truth $\psi$ for the same unit and week, which is what makes the pair usable for
+behavioral-state recovery. Hospitalisation trajectories used for the epidemic channel come
+from the HHS reported-capacity series (\url{https://healthdata.gov}).
+
+\paragraph{Paired individual validation.}
+The 2021 National Immunization Survey--Teen links household-reported vaccination to
+provider records for the same adolescent, and is the only source here that observes a
+report and an independent record of the same individual
+(\url{https://ftp.cdc.gov/pub/Vaccines_NIS/NISTEENPUF21.DAT}).
+
+\paragraph{Component-level corpora.}
+Three further corpora support assumptions about the reporting environment rather than the
+framework itself, as set out in Appendix~\ref{supp:indirect-evidence}. CHECKED contains 332
+verified-false COVID-19 Weibo posts with 26,501 timestamped receiver actions; CoAID
+contains 166 false and 1,730 reliable COVID-19 items with associated tweets and replies;
+and an accuracy-nudge experiment provides 25,627 headline ratings from 855 randomised
+participants. None observes an individual's true behaviour alongside that individual's
+report.
+
+\paragraph{Supplementary cases.}
+Germany COSMO reports against RKI administrative coverage, and a Gujarat audit sample, are
+reported as supplementary validation. Semi-synthetic reporting channels with controlled
+distortion mechanisms are built on the CDC--HHS trajectories to evaluate performance by
+misreport mechanism, which the real panel cannot isolate.
 
 \subsection{Experimental conditions}
 We evaluate the model over a full factorial grid: three equilibrium structures (separating, partial pooling, pooling) crossed with public-health policy (adaptive vs. random), baseline behavioral-rate level (low vs. high), and incentives for vaccination and masking. Table~\ref{tab:baseline-definitions} gives the operational definition of every comparator, the observations it is fitted on, and whether any hyperparameter is selected using training data only.
@@ -2141,40 +2186,38 @@ An interesting nuance is that when initial compliance is already high, sender ut
 
 \begin{figure*}[tp]
     \centering
-    \includegraphics[width=\textwidth, height=6cm]{figures/policy_partial_pooling_high}
+    \includegraphics[width=\textwidth, height=4.7cm]{figures/policy_partial_pooling_high}
     \caption{Comparison of adaptive and random policies under partial pooling with high initial behavioral rates, across epidemic dynamics, policy actions, signaling behavior, and utilities.}
     \label{fig:policy_partial_high} %\vspace{-4mm}
 \end{figure*}
 
 \begin{figure*}[tp]
     \centering
-    \includegraphics[width=\textwidth, height=6cm]{figures/policy_separating_low.png}
+    \includegraphics[width=\textwidth, height=4.7cm]{figures/policy_separating_low.png}
     \caption{Comparison of adaptive and random policies under separating with low initial behavioral rates, across epidemic dynamics, policy actions, signaling behavior, and utilities.}
     \label{fig:policy_sep_low} %\vspace{-4mm}
 \end{figure*}
 
 \begin{figure*}[tp]
     \centering
-    \includegraphics[width=\textwidth, height=6cm]{figures/policy_separating_high.png}
+    \includegraphics[width=\textwidth, height=4.7cm]{figures/policy_separating_high.png}
     \caption{Comparison of adaptive and random policies under separating with high initial behavioral rates, across epidemic dynamics, policy actions, signaling behavior, and utilities.}
     \label{fig:policy_sep_high} %\vspace{-4mm}
 \end{figure*}
 
 \begin{figure*}[tp]
     \centering
-    \includegraphics[width=\textwidth, height=6cm]{figures/policy_pooling_low.png}
+    \includegraphics[width=\textwidth, height=4.7cm]{figures/policy_pooling_low.png}
     \caption{Comparison of adaptive and random policies under pooling with low initial behavioral rates, across epidemic dynamics, policy actions, signaling behavior, and utilities.}
     \label{fig:policy_pool_low} %\vspace{-4mm}
 \end{figure*}
 
 \begin{figure*}[tp]
     \centering
-    \includegraphics[width=\textwidth, height=6cm]{figures/policy_pooling_high.png}
+    \includegraphics[width=\textwidth, height=4.7cm]{figures/policy_pooling_high.png}
     \caption{Comparison of adaptive and random policies under pooling with high initial behavioral rates, across epidemic dynamics, policy actions, signaling behavior, and utilities.}
     \label{fig:policy_pool_high} %\vspace{-4mm}
 \end{figure*}
-
-\clearpage
 
 
 
