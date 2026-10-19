@@ -301,7 +301,7 @@ while also improving policy classification. This work advances the understanding
 Epidemiological modeling increasingly depends on large-scale, crowdsourced behavioral data to track and forecast disease transmission dynamics in real time \cite{banerjee2022,BergstromRS2002}. Beyond clinical surveillance and mobility records, self-reported behavioral information on individual vaccination compliance, mask usage, and adherence to social distancing has become central to capturing the effects of non-pharmaceutical interventions (NPIs) \cite{bff2025}. 
 
 % \noindent 
-However, empirical studies across diverse contexts demonstrate large and persistent gaps between self-reported and directly observed behaviors. For example, a national study in Kenya found that while only 12\% of individuals reported not wearing masks, direct observation revealed that nearly 90\% were non-compliant, a discrepancy exceeding 75 percentage points that was consistent across demographic groups \cite{kenya2021}. Similar survey-based studies in countries like the USA document substantial social-desirability and recall biases in self-reported masking and vaccination behavior, compounded by spatial heterogeneity, policy variation, and limited auditability of daily behaviors \cite{spatiotemporal}. While vaccination records are more structured and exhibit higher fidelity than other NPI measures, they nevertheless exhibit persistent misreporting rates of approximately 5–15\%, driven by reporting delays, incomplete registries, and misclassification errors~\cite{HURLEY2026128101,DALEY20242740,IRVING20096546}.
+However, empirical studies across diverse contexts demonstrate large and persistent gaps between self-reported and directly observed behaviors. For example, a national study in Kenya found that while only 12\% of individuals reported not wearing masks, direct observation revealed that nearly 90\% were non-compliant, a discrepancy exceeding 75 percentage points that was consistent across demographic groups \cite{kenya2021}. Similar survey-based studies in countries like the USA document substantial social-desirability and recall biases in self-reported masking and vaccination behavior, compounded by spatial heterogeneity, policy variation, and limited auditability of daily behaviors \cite{spatiotemporal}. While vaccination records are more structured and exhibit higher fidelity than other NPI measures, they nevertheless exhibit persistent misreporting rates of approximately 5--15\%, driven by reporting delays, incomplete registries, and misclassification errors~\cite{HURLEY2026128101,DALEY20242740,IRVING20096546}.
 
 Moreover, a persistent and underexamined challenge lies in the strategic nature of self-reported data. Individuals may misreport or withhold behavioral information to avoid penalties, retain access to workplaces or social benefits, or due to distrust in public health authorities (PHA) ~\cite{levy2022,shiman2023}.  
 In such settings, reported data 
@@ -328,7 +328,7 @@ To address these issues, we propose a game-theoretic framework that explicitly m
 
 \begin{itemize}
     \item \textbf{Integrated reporting and epidemic model.}
-    We couple a signaling game with compartmental epidemic
+    We introduce \model{}, which couples a signaling game with compartmental epidemic
     dynamics to model incentive-dependent behavioral reports, infer population behavior, and inform public-health policy.
 
     \item \textbf{Equilibrium characterization and adaptive policy.}
@@ -344,17 +344,17 @@ To address these issues, we propose a game-theoretic framework that explicitly m
 \section{Related Work}
 \paragraph{Compartmental epidemiological models.} Classical models such as susceptible--exposed--infectious--recovered (SEIR) have been extended with compartments for vaccination ($V$) and asymptomatic transmission ($A$), yielding SVEAIR models effective at reproducing COVID-19 dynamics~\cite{ChoiJTB2020}.
 Recent advances embed epidemiological models in neural ODE/SDE frameworks with transmission graphs and uncertainty-aware control~\cite{thiagarajan2022machine,EARTH2025,nSDE2025}.
-Our approach builds on this line of research, adding process noise, weekly time–steps, and explicit feedback from reported behavior to policy, thereby closing the loop between epidemiology and decision making.
+Our approach builds on this line of research, adding process noise, weekly time--steps, and explicit feedback from reported behavior to policy, thereby closing the loop between epidemiology and decision making.
 
 \paragraph{Measurement error and strategic misreporting.}
-Self–reported health data suffer from both random noise and strategic bias.  
+Self--reported health data suffer from both random noise and strategic bias.  
 Empirical research demonstrates that self-reported health behaviors such as vaccination status, mask-wearing compliance, and infection history are frequently misreported, especially when disclosure could affect employment, travel, or social standing~\cite{Battaglia1997,Merrell2024}.
 Statistical corrections (e.g.\ weighting, imputation) address random error but struggle with incentive-driven deception. Our work complements these efforts by modeling misreporting endogenously and quantifying how it degrades policy performance across incentive regimes.
 
 \paragraph{Signaling games and equilibrium selection.}
 Information asymmetries in public health have often been modeled as signaling or screening games where individuals send costly messages and the PHA responds with incentives or restrictions.
 Equilibrium refinements (separating, pooling, mixed) determine whether truth telling, deception, or mixed strategies persist.
-Beyond traditional one–shot or static analyses, recent work has examined, in other domains, strategic disclosure under multiple alternatives~\cite{AAAI2024Disclosure} and learning-induced dynamics that deviate from Nash equilibria~\cite{IJCAI2023MultiMemory}.
+Beyond traditional one--shot or static analyses, recent work has examined, in other domains, strategic disclosure under multiple alternatives~\cite{AAAI2024Disclosure} and learning-induced dynamics that deviate from Nash equilibria~\cite{IJCAI2023MultiMemory}.
 In our work,
 we study the joint evolution of equilibrium strategies, epidemic dynamics, and responsive policy measures.
 
@@ -367,7 +367,7 @@ we study the joint evolution of equilibrium strategies, epidemic dynamics, and r
 \end{figure}
 
 \section{Framework}
-\paragraph{Basics.} We model interactions between the PHA and individuals as a two-way conversation, as illustrated in Figure~\ref{fig:System_Model}.
+\paragraph{Basics.} We refer to the framework developed in this section as \model{}. We model interactions between the PHA and individuals as a two-way conversation, as illustrated in Figure~\ref{fig:System_Model}.
 In this model, the PHA queries individuals about their vaccination and masking status, and a subset of individuals responds truthfully or strategically misreports. 
 % Besides this information (which is not necessarily accurate), the only ground truth information available to the PHA is the number of hospitalizations, typically obtained by aggregating across all clinics and hospitals in its jurisdiction. We therefore approximate hospitalization counts as proportional to symptomatic infections~\cite{FoxPNAS2022}, with the SVEAIR dynamics described below. 
 In simulations, the PHA uses behavioral reports and hospitalization observations. Empirical calibration additionally uses administrative coverage for an audited subset of training observations. We approximate hospitalizations as proportional to symptomatic infections~\cite{FoxPNAS2022}, with the SVEAIR dynamics described below. 
@@ -375,7 +375,7 @@ The PHA combines behavioral reports with hospitalization observations to update 
 
 \paragraph{Epidemiological model.}
 We cast the interaction between the population and the PHA as a two-player signaling game $\mathcal{G}$, in which individual behaviors (types), reported responses (messages), and PHA strategies (actions) are drawn from discrete sets. Let $t$ denote time. 
-In $\mathcal{G}$, the sender $T$ is a group of individuals $\mathcal{K}$, comprising $K(t)$ members, each in one of several epidemiological states: susceptible $(S)$, vaccinated $(V)$, exposed $(E)$, symptomatic $(I)$, asymptomatic $(A)$, or recovered $(R)$. Individuals send messages $m \in \mathcal{M}$ to the receiver $R$, with $\mathcal{M}$ denoting the feasible set of messages. The receiver $R$ represents the PHA’s epidemiological model, which tracks the evolution of these states through a system of ODEs~\cite{ChoiJTB2020}. 
+In $\mathcal{G}$, the sender $T$ is a group of individuals $\mathcal{K}$, comprising $K(t)$ members, each in one of several epidemiological states: susceptible $(S)$, vaccinated $(V)$, exposed $(E)$, symptomatic $(I)$, asymptomatic $(A)$, or recovered $(R)$. Individuals send messages $m \in \mathcal{M}$ to the receiver $R$, with $\mathcal{M}$ denoting the feasible set of messages. The receiver $R$ represents the PHA's epidemiological model, which tracks the evolution of these states through a system of ODEs~\cite{ChoiJTB2020}. 
 The epidemiological model, essentially a variant of the SVEAIR approach, is
 described in Appendix~\ref{supp:epi_model} and
 illustrated in 
@@ -397,7 +397,7 @@ It is important to note the vaccination rate $\psi$ and the masking rate $\eta$ 
 
 
 \paragraph{Realistic assumptions for vaccination and masking.}
-In the weekly interactive loop between individuals and the PHA (see details in Appendix~\ref{supp:weekly-loop}), masking compliance is defined based on self-reported frequency over the prior 5–7 days, classifying “all of the time” or “most of the time” as masking and other responses as non-masking, consistent with large-scale survey practice~\cite{spatiotemporal}. To account for the distinctions of vaccination and masking behaviours, the deception rates are pre-specified as 5-15\% and 40-80\%, respectively~\cite{kenya2021,Archambault2023}. 
+In the weekly interactive loop between individuals and the PHA (see details in Appendix~\ref{supp:weekly-loop}), masking compliance is defined based on self-reported frequency over the prior 5--7 days, classifying ``all of the time'' or ``most of the time'' as masking and other responses as non-masking, consistent with large-scale survey practice~\cite{spatiotemporal}. To account for the distinctions of vaccination and masking behaviours, the deception rates are pre-specified as 5-15\% and 40-80\%, respectively~\cite{kenya2021,Archambault2023}. 
 
 \paragraph{Signaling game.}
 %For notational convenience, we may omit the time index $t$; however, time dependency is understood to be implicit in the formulation.
@@ -498,7 +498,7 @@ Here, to compute the utility, which is the incentive upon deceiving, we consider
 
 Maximizing only $U_s^{(k)}(\theta_k)$ leads to a trivial solution where the individuals always choose to be dishonest about their strategies, since that will bring them maximum payoffs. %However, such a strategy 
 This leads to increased infection rates, closing down of businesses, and potentially punitive measures by the PHA.
-Therefore, the sender in our model is interpreted as \emph{a representative population agent} rather than single strategic individuals. The population consists of a continuum of individuals facing identical incentives but potentially making heterogeneous reporting choices. Accordingly, the sender’s strategy $g(m \mid \theta)$ represents a population-level mixed strategy, i.e., the empirical distribution of reports generated by individuals under the same incentive structure. In this way, the sender communication strategies must represent a balance between maximizing $U_s^{(k)}(\theta_k)$ and minimizing these losses. 
+Therefore, the sender in our model is interpreted as \emph{a representative population agent} rather than single strategic individuals. The population consists of a continuum of individuals facing identical incentives but potentially making heterogeneous reporting choices. Accordingly, the sender's strategy $g(m \mid \theta)$ represents a population-level mixed strategy, i.e., the empirical distribution of reports generated by individuals under the same incentive structure. In this way, the sender communication strategies must represent a balance between maximizing $U_s^{(k)}(\theta_k)$ and minimizing these losses. 
 
 We represent the losses as proportional to the negative of semantic accuracy, which is defined as the accuracy with which the receiver interprets the individual types from the messages communicated and written as:
 \begin{equation}
@@ -539,7 +539,7 @@ where $a$ is a constant economic coefficient controlling the slope of the expone
 %     \end{aligned}
 % \end{equation}
 % where $a$ is the economic factor, which is a constant coefficient that controls the slope of  the exponential  curve.
-As per Eq.~\eqref{eq_sender_payoff_modified}, higher $R_c(\psi,\eta)$ lowers individual payoffs. Stricter PHA measures thus reflect both rising infection rates and their economic impact on daily life. The modified sender payoffs ensure that sender utility depends not only on individual strategies but also on the PHA’s ability to predict and control the epidemic without disrupting normal activities.
+As per Eq.~\eqref{eq_sender_payoff_modified}, higher $R_c(\psi,\eta)$ lowers individual payoffs. Stricter PHA measures thus reflect both rising infection rates and their economic impact on daily life. The modified sender payoffs ensure that sender utility depends not only on individual strategies but also on the PHA's ability to predict and control the epidemic without disrupting normal activities.
 
 %As per \eqref{eq_sender_payoff_modified}, as $R_c(\psi,\eta)$ increases, the individual payoffs reduce. Hence, when the PHA introduces stricter measures, that is indicative of the economic impact due to an exploding infection rate and hence on the day-to-day normal activities of the population. The modified sender payoffs ensure that $U_s^{(k)}$ depends not just on individual strategies but also on whether the PHA is able to accurately predict the evolution of epidemiology and hence bring it under control, without impacting the day to day activities of the population.
 
@@ -553,7 +553,7 @@ As per Eq.~\eqref{eq_sender_payoff_modified}, higher $R_c(\psi,\eta)$ lowers ind
 \paragraph{Receiver utility function.}
 The receiver's objective here is to model accurately the epidemiological ODEs in \eqref{eq_ODE} using the estimated values of $\boldsymbol{\phi}(t) = \{\widehat{\psi}(t), \widehat{\eta}(t), \widehat{\lambda}(t), \widehat{\gamma}(t)$. The estimated ODE by the PHA has the same structure as the ground-truth epidemiological model given in Appendix~\ref{supp:epi_model}. The estimation error will typically be given by $\abs{X(t) - \widehat{X}(t)}^2$ for $X \in {S,V,E,I,A,R}$. However, the PHA cannot compute this error directly due to lack of access to ground-truth ODEs (as noted earlier). Fortunately, it can estimate hospitalizations, which are assumed to be proportional to infections~\cite{FoxPNAS2022}. We therefore model the hospitalization count as:
 $H(t) = \xi I(t)$,
-where $\xi$ is the infection–hospitalization ratio (IHR).
+where $\xi$ is the infection--hospitalization ratio (IHR).
 % The receiver's objective is to minimize this error and thereby ensure that the protection strategies followed by it are enough to control the disease. 
 For a given sender type and belief,  the hospitalization prediction error (also called distortion) can be written as:
 % \begin{equation}
@@ -978,7 +978,7 @@ These results highlight that equilibrium structure dominates the level of dishon
 
 To quantify the value of behavioral information, we benchmark our adaptive, signal-informed PHA response against a random policy that ignores the information of reports under partial pooling with low initial behavioral rates. 
 Under the adaptive policy, $R_c$ falls below one at week 22, associated with lower peak hospitalization (0.0037 vs 0.0058) (Figure~\ref{fig:gov_policy_partial_low}a,~\ref{fig:gov_policy_partial_low}f); whereas under the random policy disease not controlled.
-Adaptive feedback drives vaccination and masking intensity near their caps between weeks 3–10 (Figure~\ref{fig:gov_policy_partial_low}b,~\ref{fig:gov_policy_partial_low}g), producing rapid gains in coverage to roughly 60\% by week 10, compared to below 20\% under random control (Figure~\ref{fig:gov_policy_partial_low}c,~\ref{fig:gov_policy_partial_low}h); despite higher early deception, the overall deception rate plateaus at $0.4$ vs a stable $\sim0.5$ under random policy (Figure~\ref{fig:gov_policy_partial_low}d), and more rapid growth of information content bits grow much faster, indicating more informative signals received by the PHA (Figure~\ref{fig:gov_policy_partial_low}i). Sender utility rises more under adaptive control (from 0.24 to 0.34) than under random (0.31), and receiver utility is markedly higher, peaking near 6 versus staying below 1.5 (Figure~\ref{fig:gov_policy_partial_low}e,~\ref{fig:gov_policy_partial_low}j). Similar patterns across equilibria and initial compliance are shown in Appendix~\ref{supp: policy_comparison}, where the overall quality of control follows the expected ordering separating $>$ partial pooling $>$ pooling.
+Adaptive feedback drives vaccination and masking intensity near their caps between weeks 3--10 (Figure~\ref{fig:gov_policy_partial_low}b,~\ref{fig:gov_policy_partial_low}g), producing rapid gains in coverage to roughly 60\% by week 10, compared to below 20\% under random control (Figure~\ref{fig:gov_policy_partial_low}c,~\ref{fig:gov_policy_partial_low}h); despite higher early deception, the overall deception rate plateaus at $0.4$ vs a stable $\sim0.5$ under random policy (Figure~\ref{fig:gov_policy_partial_low}d), and more rapid growth of information content bits grow much faster, indicating more informative signals received by the PHA (Figure~\ref{fig:gov_policy_partial_low}i). Sender utility rises more under adaptive control (from 0.24 to 0.34) than under random (0.31), and receiver utility is markedly higher, peaking near 6 versus staying below 1.5 (Figure~\ref{fig:gov_policy_partial_low}e,~\ref{fig:gov_policy_partial_low}j). Similar patterns across equilibria and initial compliance are shown in Appendix~\ref{supp: policy_comparison}, where the overall quality of control follows the expected ordering separating $>$ partial pooling $>$ pooling.
 
 
 \paragraph{Partial pooling quantifies the tolerance frontier between behavioral deception and epidemic control.}
@@ -1000,7 +1000,7 @@ Figure~\ref{fig:tolerance_contours} characterizes the maximum tolerable active-d
     \caption{{Real-world behavioral-state recovery and policy classification.}
     (a) Reported and corrected coverage versus CDC records.
     (b) Coverage error across baselines.
-    (c) EpiGame component ablations.
+    (c) \model{} component ablations.
     (d) Coverage versus policy error. }
     % Shading marks improved coverage estimation but worse policy classification than raw reports.
     % Error bars show $\pm1.96$ standard errors over 30 paired audit draws.}
@@ -1050,11 +1050,11 @@ Fixed-budget error is a retrospective diagnostic that evaluates score rankings a
 Table~\ref{tab:control-comparison} distinguishes estimation quality from intervention intensity. The framework achieves lower policy-classification error than the filtering and uncertainty-aware alternatives. The retrospective fixed-budget comparison additionally evaluates whether their scores prioritize the county-weeks requiring intervention. These results support integrating reporting correction with epidemiological structure for policy-relevant behavioral inference. Complementary individual-level validation uses paired household vaccination reports and provider records from NIS-Teen (Table~\ref{tab:nis-teen-validation}).
 
 \paragraph{Performance depends on the reporting mechanism.}
-We evaluate EpiGame using CDC vaccination and HHS
+We evaluate \model{} using CDC vaccination and HHS
 hospitalization trajectories with controlled semi-synthetic
 reporting distortions.
 Under risk-dependent, persistent, and coordinated distortions,
-EpiGame reduces vaccination-state error by approximately
+\model{} reduces vaccination-state error by approximately
 68\%, 34\%, and 21\%, respectively, relative to the best
 alternative in each setting (Table~\ref{tab:mechanism-benchmark}).
 Under mean-zero random error, its error is close to that
@@ -1114,7 +1114,7 @@ Random forest
 & 0.0593
 & 0.0450 \\
 
-EpiGame
+\model{}
 & \textbf{0.0128}
 & \textbf{0.0190}
 & \textbf{0.0299}
@@ -1127,7 +1127,7 @@ EpiGame
 
 
 
-\paragraph{Robustness of the SVEAIR–signaling-game pipeline to stress factors across equilibria.}
+\paragraph{Robustness of \model{} to stress factors across equilibria.}
 
 \begin{table}[tbp]
 \centering
@@ -1196,7 +1196,7 @@ Vaccine efficacy
 \vspace{-5mm}
 \end{table}
 
-We perform a series of stress tests to validate our simulation framework under key factors, including infection–hospitalization ratios (IHRs), incentives for vaccination and masking, the non-responsive share (NRS) to surveys, and vaccine efficacy. Table~\ref{tab:stress} summarizes how robust epidemic control is to these perturbations under all equilibria. Differences in disease control scores and ratios of peak hospitalization are reported relative to the baseline setting defined in Table~\ref{tab:param-summary}. As expected, increasing the IHR approximately doubles peak hospitalization across all equilibria (1.975--1.993$\times$ the baseline peak), while producing modest improvements in disease control scores. Increasing vaccine efficacy provides the largest improvement in epidemic control, increasing the disease control score by 0.325, 0.320, and 0.243 under separating, partial pooling, and pooling equilibria, respectively, while slightly reducing peak hospitalization. By contrast, changes in incentives have relatively limited effects on epidemic outcomes, suggesting that moderate variations in behavioral incentives do not substantially alter the long-term control dynamics. Increasing the non-responsive share has a more pronounced negative impact, reducing disease control scores by 0.263, 0.188, and 0.117 across the three equilibria, highlighting the importance of obtaining sufficient behavioral participation for reliable inference. %Overall, the framework remains robust across stress factors, while the results indicate that clinical severity (IHR), intervention effectiveness (vaccine efficacy), and behavioral observability (NRS) influence epidemic control through distinct mechanisms.
+We perform a series of stress tests to validate our simulation framework under key factors, including infection--hospitalization ratios (IHRs), incentives for vaccination and masking, the non-responsive share (NRS) to surveys, and vaccine efficacy. Table~\ref{tab:stress} summarizes how robust epidemic control is to these perturbations under all equilibria. Differences in disease control scores and ratios of peak hospitalization are reported relative to the baseline setting defined in Table~\ref{tab:param-summary}. As expected, increasing the IHR approximately doubles peak hospitalization across all equilibria (1.975--1.993$\times$ the baseline peak), while producing modest improvements in disease control scores. Increasing vaccine efficacy provides the largest improvement in epidemic control, increasing the disease control score by 0.325, 0.320, and 0.243 under separating, partial pooling, and pooling equilibria, respectively, while slightly reducing peak hospitalization. By contrast, changes in incentives have relatively limited effects on epidemic outcomes, suggesting that moderate variations in behavioral incentives do not substantially alter the long-term control dynamics. Increasing the non-responsive share has a more pronounced negative impact, reducing disease control scores by 0.263, 0.188, and 0.117 across the three equilibria, highlighting the importance of obtaining sufficient behavioral participation for reliable inference. %Overall, the framework remains robust across stress factors, while the results indicate that clinical severity (IHR), intervention effectiveness (vaccine efficacy), and behavioral observability (NRS) influence epidemic control through distinct mechanisms.
 
 
 \section{Conclusion}
@@ -1704,7 +1704,7 @@ and masking deception $\tilde{m}^{(\eta)}$ can be written as
 \end{align}
 
 
-\section{Weekly Population–PHA Interaction Loop}
+\section{Weekly Population--PHA Interaction Loop}
 \label{supp:weekly-loop}
 
 
@@ -1750,7 +1750,7 @@ and masking deception $\tilde{m}^{(\eta)}$ can be written as
 
 \begin{algorithm}[tbp]
 \small
-\caption{Weekly Population–PHA Interaction Loop}
+\caption{Weekly Population--PHA Interaction Loop}
 \label{alg:weekly_loop}
 \begin{algorithmic}[1]
 \Require Initial states $(S,V,E,A,I,R)$,
@@ -1815,7 +1815,7 @@ Algorithm~\ref{alg:weekly_loop} summarizes the iterative feedback mechanism that
 
 % \subsection{Experimental conditions.}
 % We evaluate the model over a full factorial grid: three equilibrium structures (separating, partial pooling, pooling) crossed with public-health policy (adaptive vs. random), baseline behavioral-rate level (low vs. high), and incentives for vaccination and masking.
-% Daily outputs are aggregated into weekly steps. Epidemiological and behavioral series are smoothed with a Savitzky–Golay filter, whereas strategic variables are updated by exponential smoothing to retain short-term fluctuations.
+% Daily outputs are aggregated into weekly steps. Epidemiological and behavioral series are smoothed with a Savitzky--Golay filter, whereas strategic variables are updated by exponential smoothing to retain short-term fluctuations.
 
 \subsection{Assumption Ledger}
 Table~\ref{tab:coupling-assumptions} separates assumptions inherited from the two layers from those introduced by their integration.
@@ -1855,18 +1855,18 @@ behavioral estimates mapped to transmission. \\
 \end{table}
 
 \subsection{Baselines} 
-Two baselines benchmark the two-player EpiGame scheme:
+Two baselines benchmark the two-player \model{} scheme:
 
 \begin{enumerate}
 \item {\bf No interaction}. Individuals never report behaviors and the PHA issues no recommendations, providing a lower-bound for epidemic control across equilibria.
 
-\item {\bf Random policy.} PHA replaces its adaptive rule with weekly recommendations perturbed by zero-mean noise whose variance matches the empirical variance of the adaptive policy’s gradient (estimated from hospitalisations), isolating the value of behavior-aware adaptation.
+\item {\bf Random policy.} PHA replaces its adaptive rule with weekly recommendations perturbed by zero-mean noise whose variance matches the empirical variance of the adaptive policy's gradient (estimated from hospitalisations), isolating the value of behavior-aware adaptation.
 \end{enumerate}
 
 \subsection{Datasets}
 \label{data}
 \subsubsection{Simulations}
-As described in the main text, for each scenario considered, we run Monte-Carlo simulations of a K=10{,}000–person population over a 26-week horizon with the baseline parameter set listed in Table~\ref{tab:param-summary}.
+As described in the main text, for each scenario considered, we run Monte-Carlo simulations of a K=10{,}000--person population over a 26-week horizon with the baseline parameter set listed in Table~\ref{tab:param-summary}.
 
 
 % \begin{table*}[tp]
@@ -2013,7 +2013,7 @@ We evaluate the framework on real-world COVID-19 datasets. The CHECKED dataset c
 
 \subsection{Experimental conditions}
 We evaluate the model over a full factorial grid: three equilibrium structures (separating, partial pooling, pooling) crossed with public-health policy (adaptive vs. random), baseline behavioral-rate level (low vs. high), and incentives for vaccination and masking. Table~\ref{tab:baseline-definitions} gives the operational definition of every comparator, the observations it is fitted on, and whether any hyperparameter is selected using training data only.
-Daily outputs are aggregated into weekly steps. Epidemiological and behavioral series are smoothed with a Savitzky–Golay filter, whereas strategic variables are updated by exponential smoothing to retain short-term fluctuations.
+Daily outputs are aggregated into weekly steps. Epidemiological and behavioral series are smoothed with a Savitzky--Golay filter, whereas strategic variables are updated by exponential smoothing to retain short-term fluctuations.
 
 
 \begin{table*}[t]
@@ -2137,7 +2137,7 @@ All code for running simulations and reproducing results is available at: \url{h
 \label{supp: policy_comparison}
 Across all three information regimes, the adaptive policy consistently outperforms the random policy in epidemic control, driving lower $R_c$, smaller peak hospitalization, and better receiver utility. Moreover, the overall quality of control follows the expected ordering separating $>$ partial pooling $>$ pooling, with both peak hospitalization and equilibrium deception rates smallest under separating, larger under partial pooling, and largest under pooling. Figures~\ref{fig:policy_partial_high}--\ref{fig:policy_pool_high} show the full comparison for each regime and initial-compliance setting.
 
-An interesting nuance is that when initial compliance is already high, sender utility under the random policy is often comparable to, or slightly higher than, under adaptive control—because in that regime the epidemic can be kept in check even with relatively mild, noisy recommendations, so the population “pays” less in terms of strong, targeted interventions while still enjoying reasonably low infection risk.
+An interesting nuance is that when initial compliance is already high, sender utility under the random policy is often comparable to, or slightly higher than, under adaptive control---because in that regime the epidemic can be kept in check even with relatively mild, noisy recommendations, so the population ``pays'' less in terms of strong, targeted interventions while still enjoying reasonably low infection risk.
 
 \begin{figure*}[tp]
     \centering
