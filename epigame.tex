@@ -926,7 +926,7 @@ Under low baseline rates (Figure~\ref{fig:rc}a), the separating and partial pool
 When initial behaviors are better (Figure~\ref{fig:rc}b), all three equilibria achieve control with different speeds: separating (week~5), partial pooling (week~9), pooling (week~18). 
 In both scenarios, the no-interaction baseline remains $R_c > 1$, demonstrating that adaptive, behavior-informed feedback between the population and the PHA is essential for maintaining effective epidemic control.
 
-\begin{figure}[h]
+\begin{figure}[tbp]
     \centering
     \includegraphics[width=.9\columnwidth]{figures/rc_comparison.png}
     \caption{Controlled reproduction number ($R_c$) across equilibria vs no-interaction baseline with low (a) and high (b) initial behavioral rates.}
@@ -935,7 +935,7 @@ In both scenarios, the no-interaction baseline remains $R_c > 1$, demonstrating 
 \end{figure}
 
 
-\begin{figure}[h]
+\begin{figure}[tbp]
     \centering
     \includegraphics[width=\linewidth]{figures/belief_heatmap.png}
     \caption{Sender strategies $g(m \mid \theta)$ and receiver beliefs $q(\theta \mid m)$ across equilibria.}
@@ -958,7 +958,7 @@ The same ordering persists when baseline rates are high (Figure~\ref{fig:decepti
 %Partial pooling shows a pronounced decline in masking deception, falling from above 0.5 to near 0.35 by week 26. Separating remains 0.3. 
 These results highlight that equilibrium structure dominates the level of dishonesty, and that higher initial behavioral rates modestly reduces deceptive reporting.
 
-\begin{figure}[h]
+\begin{figure}[tbp]
     \centering
     \includegraphics[width=\linewidth]{figures/deception_all-equilibria_low.png}
     \caption{The deception rates across equilibria under low initial behavioral rates.}
@@ -967,7 +967,7 @@ These results highlight that equilibrium structure dominates the level of dishon
 \end{figure}
 
 
-\begin{figure*}[h]
+\begin{figure*}[tp]
     \centering
     \includegraphics[width=\textwidth, height=6cm]{figures/policy_partial_pooling_low}
     \caption{Comparison of adaptive and random policies under partial pooling with low initial behavioral rates, across epidemic dynamics, policy actions, signaling behavior, and utilities.}
@@ -983,7 +983,7 @@ Adaptive feedback drives vaccination and masking intensity near their caps betwe
 
 \paragraph{Partial pooling quantifies the tolerance frontier between behavioral deception and epidemic control.}
 
-\begin{figure}[h]
+\begin{figure}[tbp]
 \centering
 \includegraphics[width=\columnwidth]{figures/tolerance.png} 
 \vspace{-2mm}
@@ -994,7 +994,7 @@ Adaptive feedback drives vaccination and masking intensity near their caps betwe
 Figure~\ref{fig:tolerance_contours} characterizes the maximum tolerable active-deception level $d^*$ under partial pooling across combinations of vaccination rate $\psi$ and masking rate $\eta$. At Week~0, tolerance is limited when both behavioral rates are low but increases substantially as vaccination and masking coverage rises. The black curve marks combinations at which observed deception equals the tolerable level; regions above this boundary provide a positive tolerance margin. Across Weeks~3, 6, and 9, the tolerable region expands and the equality boundary shifts toward lower behavioral rates. Thus, under the modeled trajectory, the system becomes more robust to deception as behavioral protection accumulates and epidemic pressure is increasingly controlled. This pattern should not be interpreted as evidence that information quality becomes unimportant: low-coverage combinations continue to provide the smallest tolerance margins, particularly early in the outbreak. The contours also indicate complementarity between vaccination and masking. Higher adoption of either intervention can partly compensate for lower adoption of the other, although combinations with high values of both provide the greatest robustness to strategic misreporting. Overall, the figure quantifies how the behavioral protection profile and epidemic stage jointly determine the level of active deception that can be accommodated under the specified control criterion.
 
 
-\begin{figure}[h]
+\begin{figure}[tbp]
     \centering
     \includegraphics[width=\columnwidth]{figures/real_case.png}
     \caption{{Real-world behavioral-state recovery and policy classification.}
@@ -1012,7 +1012,7 @@ Figure~\ref{fig:tolerance_contours} characterizes the maximum tolerable active-d
 \paragraph{Real-world evaluation supports policy-relevant behavioral inference}
 To examine whether real-world behavioral distortions exhibit the strategic structure assumed by \model{}, we evaluate CTIS self-reported vaccination against matched CDC adult administrative coverage across 10,039 county-weeks from 546 counties in 48 states. The 3,531 county-weeks after August 11, 2021 are held out, and only 25\% of training observations are audited. All methods use identical available inputs and splits, with ridge penalties selected on inner training splits. Correction reduces coverage bias from $+13.4$ to $-1.5$ percentage points (pp) and increases $R^2$ from $0.26$ to $0.59$ (Figure~\ref{fig:real_case}a). \model{} achieves the lowest coverage error at $5.09$ pp, compared with $13.99$ pp for raw reports and $8.69$ pp for the strongest alternative, random forest (Figure~\ref{fig:real_case}b). Removing the signaling component increases error to $12.01$ pp, while removing the SVEAIR consistency constraint increases it to $5.41$ pp (Figure~\ref{fig:real_case}c). Several corrections improve coverage estimates but worsen classification of $R_c>1$, whereas the coupled framework improves both outcomes under the common epidemiological mapping (Figure~\ref{fig:real_case}d). These results support integrating reporting correction with epidemiological structure for policy-relevant inference. 
 
-\begin{table}[h]
+\begin{table}[tbp]
 \centering
 \caption{Separate control experiment on held-out CTIS--CDC
 county-weeks. Lower error is better. }
@@ -1063,7 +1063,7 @@ These results identify the reporting mechanisms under which
 structured correction improves recovery and those under
 which it offers limited benefit or increases error.
 
-\begin{table}[h]
+\begin{table}[tbp]
 \centering
 \caption{Vaccination-state error under semi-synthetic reporting distortions. Lower is better. }
 \label{tab:mechanism-benchmark}
@@ -1129,7 +1129,7 @@ EpiGame
 
 \paragraph{Robustness of the SVEAIR–signaling-game pipeline to stress factors across equilibria.}
 
-\begin{table}[h]
+\begin{table}[tbp]
 \centering
 \caption{Stress-test outcomes across equilibria. Disease control score shows
 changes relative to baseline, while peak hospitalization reports ratios
@@ -1272,6 +1272,8 @@ During the preparation of this manuscript, the authors used generative AI tools 
 
 
 \newpage
+% Measurement aid: \ref{marker:endmain} resolves to the last page of the main text.
+\label{marker:endmain}
 \appendix
 \setcounter{table}{0}
 \renewcommand{\thetable}{A\arabic{table}}
@@ -1817,7 +1819,7 @@ Algorithm~\ref{alg:weekly_loop} summarizes the iterative feedback mechanism that
 
 \subsection{Assumption Ledger}
 Table~\ref{tab:coupling-assumptions} separates assumptions inherited from the two layers from those introduced by their integration.
-\begin{table}[h]
+\begin{table}[tbp]
 \centering
 \caption{Assumptions inherited from each model and introduced
 by their coupling.}
@@ -1867,7 +1869,7 @@ Two baselines benchmark the two-player EpiGame scheme:
 As described in the main text, for each scenario considered, we run Monte-Carlo simulations of a K=10{,}000–person population over a 26-week horizon with the baseline parameter set listed in Table~\ref{tab:param-summary}.
 
 
-% \begin{table*}[h]
+% \begin{table*}[tp]
 % \begin{minipage}{\textwidth}
 % \centering
 % \caption{Summary of model parameters and baseline values used in our experiments.}
@@ -2137,40 +2139,42 @@ Across all three information regimes, the adaptive policy consistently outperfor
 
 An interesting nuance is that when initial compliance is already high, sender utility under the random policy is often comparable to, or slightly higher than, under adaptive control—because in that regime the epidemic can be kept in check even with relatively mild, noisy recommendations, so the population “pays” less in terms of strong, targeted interventions while still enjoying reasonably low infection risk.
 
-\begin{figure*}[h]
+\begin{figure*}[tp]
     \centering
     \includegraphics[width=\textwidth, height=6cm]{figures/policy_partial_pooling_high}
     \caption{Comparison of adaptive and random policies under partial pooling with high initial behavioral rates, across epidemic dynamics, policy actions, signaling behavior, and utilities.}
     \label{fig:policy_partial_high} %\vspace{-4mm}
 \end{figure*}
 
-\begin{figure*}[h]
+\begin{figure*}[tp]
     \centering
     \includegraphics[width=\textwidth, height=6cm]{figures/policy_separating_low.png}
     \caption{Comparison of adaptive and random policies under separating with low initial behavioral rates, across epidemic dynamics, policy actions, signaling behavior, and utilities.}
     \label{fig:policy_sep_low} %\vspace{-4mm}
 \end{figure*}
 
-\begin{figure*}[h]
+\begin{figure*}[tp]
     \centering
     \includegraphics[width=\textwidth, height=6cm]{figures/policy_separating_high.png}
     \caption{Comparison of adaptive and random policies under separating with high initial behavioral rates, across epidemic dynamics, policy actions, signaling behavior, and utilities.}
     \label{fig:policy_sep_high} %\vspace{-4mm}
 \end{figure*}
 
-\begin{figure*}[h]
+\begin{figure*}[tp]
     \centering
     \includegraphics[width=\textwidth, height=6cm]{figures/policy_pooling_low.png}
     \caption{Comparison of adaptive and random policies under pooling with low initial behavioral rates, across epidemic dynamics, policy actions, signaling behavior, and utilities.}
     \label{fig:policy_pool_low} %\vspace{-4mm}
 \end{figure*}
 
-\begin{figure*}[h]
+\begin{figure*}[tp]
     \centering
     \includegraphics[width=\textwidth, height=6cm]{figures/policy_pooling_high.png}
     \caption{Comparison of adaptive and random policies under pooling with high initial behavioral rates, across epidemic dynamics, policy actions, signaling behavior, and utilities.}
     \label{fig:policy_pool_high} %\vspace{-4mm}
 \end{figure*}
+
+\clearpage
 
 
 
@@ -2213,7 +2217,7 @@ the framework itself. The direct test of $g(m\mid\theta)$ is the paired
 report-versus-record analysis of Table~\ref{tab:nis-teen-validation}, and the end-to-end
 test is the CTIS--CDC evaluation in the main text.
 
-\begin{figure}[h]
+\begin{figure}[tbp]
 \centering
 \includegraphics[width=\columnwidth]{figures/indirect_evidence.png}
 \vspace{-5mm}
@@ -2226,7 +2230,7 @@ response. \textbf{(a)} Diffusion concentration. \textbf{(b)} Response latency.
 
 \subsection{Deception patterns}
 
-\begin{figure}[h]
+\begin{figure}[tbp]
     \centering
     \includegraphics[width=\linewidth]{figures/deception_all-equilibria_high.png}
     \vspace{-4mm}
@@ -2240,7 +2244,7 @@ Figure~\ref{fig:deception_high}: The overall and separate strategy deception rat
 
 Receiver sensitivity separates estimation from decision accuracy: moderate distortion regularization improves policy classification despite increasing coverage error (Table~\ref{tab:receiver-sensitivity}).
 
-\begin{table}[h]
+\begin{table}[tbp]
 \centering
 \caption{Sensitivity of the grid-based Bayesian receiver to
 distortion regularization. Coverage error is in percentage
@@ -2269,7 +2273,7 @@ $\lambda_2$
 
 \paragraph{Paired report--record validation.} The 2021 CDC NIS-Teen links household-reported HPV vaccination to provider records for the same adolescent, excluding doses administered after the household interview. We use 16,708 paired observations, split into 11,695 training and 5,013 held-out observations. Analyses use provider survey weights. Intervals are obtained from 2,000 stratum-preserving household resamples with weights held fixed. All correction methods improve Brier score over raw reports, while differences among the correction methods are statistically indistinguishable. This evaluation measures reporting-error recovery rather than identification of strategic intent.
 
-\begin{table}[h]
+\begin{table}[tbp]
 \centering
 \caption{Paired individual validation on the 2021 NIS-Teen
 held-out sample. Differences are weighted Brier scores
@@ -2303,7 +2307,7 @@ Reporting channel
 
 Structured correction includes contextual features and county adjustments. Its replacement by report-only calibration therefore tests the full correction structure, rather than the marginal contribution of incentive features. Removing consistency omits the county-wise monotone projection during inference while retaining the common evaluation mapping.
 
-\begin{table*}[h]
+\begin{table*}[tp]
 \centering
 \caption{Component ablation on held-out CTIS--CDC county-weeks.
 Coverage intervals are mean $\pm1.96$ standard errors across

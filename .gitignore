@@ -1,0 +1,13 @@
+# LaTeX build artefacts (Overleaf regenerates these on every build)
+*.aux
+*.log
+*.out
+*.bbl
+*.blg
+*.fls
+*.fdb_latexmk
+*.synctex.gz
+*.toc
+*.lof
+*.lot
+epigame.pdf
