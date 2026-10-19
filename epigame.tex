@@ -461,7 +461,7 @@ U_s^{(k)}(\theta_k) =
 g(m_k\mid\theta_k)
 \Delta(\theta_k,m_k),
 \end{aligned}
-\label{eq_sender_payoff_modified}
+\label{eq_sender_payoff}
 \end{equation}
 
 and
@@ -531,7 +531,7 @@ U_s^{(k)}(\theta_k).
 \end{aligned}
 \label{eq_sender_payoff_modified}
 \end{equation}
-where $a$ is a constant economic coefficient that controls the slope of  the exponential  curve.
+where $a$ is a constant economic coefficient controlling the slope of the exponential curve. All subsequent sender payoffs are the discounted form $\widetilde{U}_s^{(k)}$, which we write inline as $e^{-aR_c}I(\theta)$ when only the deception gain of a single type is at issue.
 % \begin{equation}
 %     \begin{aligned}
 %     U_s^{(k)}(\theta_k,m_k) &= g(m_k = ``11"\mid \theta_k) e^{-aR_c(\psi,\eta)}(I_v+I_m) \\ & + g(m_k = ``10"\mid \theta_k)e^{-aR_c(\psi,\eta)}I_{v} \\ &+ g(m_k = ``01"\mid \theta_k) e^{-aR_c(\psi,\eta)}I_m,
@@ -693,7 +693,7 @@ Conversely, given the receiver belief, a pragmatic sender chooses messages accor
 P_S(m\mid\theta) \propto e^ {\left( \tau \left(u_s(\theta,m) - \lambda_1 u_L(\theta,m) \right) \right)}, 
 \label{eq:rsa_speaker} 
 \end{equation} 
-where $\tau$ controls the rationality of the sender, $u_s(\theta,m)$ denotes the message-level sender utility, and $u_L(\theta,m)$ denotes the semantic loss associated with inferring behavioral type $\theta$ from message $m$.
+where $\tau$ controls the rationality of the sender, $u_s(\theta,m)$ denotes the message-level sender utility, and $u_L(\theta,m)$ denotes the semantic loss associated with inferring behavioral type $\theta$ from message $m$. The equilibrium analysis of Section~\ref{sec:equilibrium} works in the $\tau\to\infty$ limit, where \eqref{eq:rsa_speaker} becomes an exact best response and randomisation survives only at indifference. The mixing probability $\alpha$ analysed there is that randomisation, so the strategy $g^{*}(m\mid\theta)$ used throughout is the deterministic-limit specialisation of \eqref{eq:rsa_speaker} to the two-action choice between truthful reporting and the pooling message.
 
 Given the sender strategy, the receiver posterior is obtained by solving
 the constrained inference problem in Eq.~\eqref{eq:P2}. The receiver balances two objectives, i.e., reducing uncertainty in inferred behavioral states and maintaining consistency with observed epidemic dynamics.
@@ -703,21 +703,27 @@ The corresponding Lagrangian formulation is
 \begin{aligned}
 \mathcal{L}
 =&
--\sum_{\theta,m}
-P(m)P_L(\theta\mid m)
-\log P_L(\theta\mid m)
+\sum_{m}
+P(m)\,
+\mathrm{KL}\!\left(
+P_L(\cdot\mid m)\,\big\|\,
+\tfrac{P(\cdot)P_S(m\mid\cdot)}{P(m)}
+\right)
 \\
 &
 +\lambda_2
-\left(
-D(P_L)-D^*
-\right),
+\sum_{\theta,m}
+P(m)P_L(\theta\mid m)D(\theta)
++\sum_{m}\nu_m\!\left(\sum_{\theta}P_L(\theta\mid m)-1\right),
 \end{aligned}
 \label{eq:Lagrangian_receiver}
 \end{equation}
 
-where $\lambda_2$ is the Lagrange multiplier controlling the trade-off between inference confidence and epidemiological distortion.
-Solving this constrained optimization yields the receiver posterior
+where $\lambda_2$ weights epidemiological distortion against fidelity to the Bayes
+posterior and $\nu_m$ enforces normalisation. Setting
+$\partial\mathcal L/\partial P_L(\theta\mid m)=0$ gives
+$\log P_L(\theta\mid m)=\log\bigl[P(\theta)P_S(m\mid\theta)/P(m)\bigr]-\lambda_2D(\theta)+c_m$,
+so the receiver posterior is
 
 \begin{equation}
 P_L(\theta\mid m)
@@ -741,6 +747,7 @@ are inconsistent with observed hospitalization trajectories.
 
 
 \section{Equilibrium Analysis}
+\label{sec:equilibrium}
 
 We characterise the reporting stage at a fixed epidemic state. A non-compliant type
 $\theta$ chooses $\alpha_\theta\in[0,1]$, the probability of sending the pooling message
@@ -844,7 +851,6 @@ which is a separate contribution we do not claim here. When $\lambda_2>0$ the re
 beliefs are deliberately distorted away from Bayes, so the solution concept is a
 \emph{regularised} reporting equilibrium that coincides with Perfect Bayesian Equilibrium
 only at $\lambda_2=0$.
-%The sensitivity parameter $\beta > 0$ captures how quickly the reproduction number degrades as pooling increases. Higher $\beta$ widens the existence region, making partial pooling more likely to emerge as a stable equilibrium.
 
 % Departing from extremed pooling equilibrium and idealized separating equilibrium, partial pooling equilibrium is achieved when some individuals are honest while others may engage in deception. In this case, even with some dishonesty, PHA receives partial useful signals and tries to obtain $R_c(\psi,\eta) < 1$ and $\widehat{\psi} > \psi_{HI}$. The key question is: \emph{to what extent can deception be tolerated while still ensuring the epidemic converges to an equilibrium with negligible infections?} We decompose $\mathcal{K}$ into $\mathcal{K}_c$, the set of individuals responding to PHA queries, and $\mathcal{K}_s$, those who remain silent. The deception $\tilde{m}$ can then be characterized as:
 
@@ -972,7 +978,7 @@ These results highlight that equilibrium structure dominates the level of dishon
 
 To quantify the value of behavioral information, we benchmark our adaptive, signal-informed PHA response against a random policy that ignores the information of reports under partial pooling with low initial behavioral rates. 
 Under the adaptive policy, $R_c$ falls below one at week 22, associated with lower peak hospitalization (0.0037 vs 0.0058) (Figure~\ref{fig:gov_policy_partial_low}a,~\ref{fig:gov_policy_partial_low}f); whereas under the random policy disease not controlled.
-Adaptive feedback drives vaccination and masking intensity near their caps between weeks 3–10 (Figure~\ref{fig:gov_policy_partial_low}b,~\ref{fig:gov_policy_partial_low}g), producing rapid gains in coverage to roughly 60\% by week 10, compared to below 20\% under random control (Figure~\ref{fig:gov_policy_partial_low}c,~\ref{fig:gov_policy_partial_low}h); despite higher early deception, the overall deception rate plateaus at $0.4$ vs a stable $\sim0.5$ under random policy (Figure~\ref{fig:gov_policy}d), and more rapid growth of information content bits grow much faster, indicating more informative signals received by the PHA (Figure~\ref{fig:gov_policy_partial_low}i). Sender utility rises more under adaptive control (from 0.24 to 0.34) than under random (0.31), and receiver utility is markedly higher, peaking near 6 versus staying below 1.5 (Figure~\ref{fig:gov_policy_partial_low}e,~\ref{fig:gov_policy_partial_low}j). Similar patterns across equilibria and initial compliance are shown in Appendix~\ref{supp: policy_comparison}, where the overall quality of control follows the expected ordering separating $>$ partial pooling $>$ pooling.
+Adaptive feedback drives vaccination and masking intensity near their caps between weeks 3–10 (Figure~\ref{fig:gov_policy_partial_low}b,~\ref{fig:gov_policy_partial_low}g), producing rapid gains in coverage to roughly 60\% by week 10, compared to below 20\% under random control (Figure~\ref{fig:gov_policy_partial_low}c,~\ref{fig:gov_policy_partial_low}h); despite higher early deception, the overall deception rate plateaus at $0.4$ vs a stable $\sim0.5$ under random policy (Figure~\ref{fig:gov_policy_partial_low}d), and more rapid growth of information content bits grow much faster, indicating more informative signals received by the PHA (Figure~\ref{fig:gov_policy_partial_low}i). Sender utility rises more under adaptive control (from 0.24 to 0.34) than under random (0.31), and receiver utility is markedly higher, peaking near 6 versus staying below 1.5 (Figure~\ref{fig:gov_policy_partial_low}e,~\ref{fig:gov_policy_partial_low}j). Similar patterns across equilibria and initial compliance are shown in Appendix~\ref{supp: policy_comparison}, where the overall quality of control follows the expected ordering separating $>$ partial pooling $>$ pooling.
 
 
 \paragraph{Partial pooling quantifies the tolerance frontier between behavioral deception and epidemic control.}
@@ -2004,7 +2010,7 @@ $T$ & Duration (weeks)
 We evaluate the framework on real-world COVID-19 datasets. The CHECKED dataset contains 332 verified-false COVID-19 Weibo posts and 26,501 timestamped receiver actions. The CoAID dataset contains 166 false and 1,730 reliable COVID-19 items with associated tweets and replies. For receiver-side accuracy evaluation, we use an intervention dataset with 25,627 headline ratings collected from 855 randomized participants. For epidemic-state validation, we use CDC--HHS vaccination and hospitalization trajectories covering 52 U.S. states over 27 weeks and construct semi-synthetic reporting channels with controlled distortion mechanisms. Additional Germany, U.S. survey, and Gujarat audit datasets are included as supplementary validation cases.
 
 \subsection{Experimental conditions}
-We evaluate the model over a full factorial grid: three equilibrium structures (separating, partial pooling, pooling) crossed with public-health policy (adaptive vs. random), baseline behavioral-rate level (low vs. high), and incentives for vaccination and masking.
+We evaluate the model over a full factorial grid: three equilibrium structures (separating, partial pooling, pooling) crossed with public-health policy (adaptive vs. random), baseline behavioral-rate level (low vs. high), and incentives for vaccination and masking. Table~\ref{tab:baseline-definitions} gives the operational definition of every comparator, the observations it is fitted on, and whether any hyperparameter is selected using training data only.
 Daily outputs are aggregated into weekly steps. Epidemiological and behavioral series are smoothed with a Savitzky–Golay filter, whereas strategic variables are updated by exponential smoothing to retain short-term fluctuations.
 
 
@@ -2058,8 +2064,8 @@ training observations. \\
 Uncertainty-aware control
 & Propagates filtering uncertainty through the common
 epidemiological mapping and acts when
-$P(R_c>1)>\tau$.
-& Variance inflation and $\tau$ selected on an
+$P(R_c>1)>\tau_c$.
+& Variance inflation and $\tau_c$ selected on an
 inner training split. \\
 
 \model{}
@@ -2116,7 +2122,7 @@ We impose an SVEAIR-inspired consistency constraint by projecting each county's 
 This estimator learns an audited mapping from reports and observable context to population coverage. It does not identify individual utility functions or establish that observed reporting discrepancies reflect deliberate deception.
 
 \subsection{Component attribution} 
-The structured-correction ablation replaces the full estimator with report-only ridge calibration, removing contextual features and county adjustments together. It therefore measures the contribution of structured correction as a whole, not signaling incentives alone. A separate feature-matched ablation removes only the risk and incentive proxies while retaining reported coverage, time, state effects, and county adjustments. Removing SVEAIR consistency omits the isotonic projection; removing both components combines report-only calibration with no projection. Every configuration retains the same evaluation mapping and policy rule.
+The structured-correction ablation replaces the full estimator with report-only ridge calibration, removing contextual features and county adjustments together. It therefore measures the contribution of structured correction as a whole, not signaling incentives alone. A separate feature-matched ablation removes only the risk and incentive proxies while retaining reported coverage, time, state effects, and county adjustments. Removing SVEAIR consistency omits the isotonic projection; removing both components combines report-only calibration with no projection. Every configuration retains the same evaluation mapping and policy rule. Table~\ref{tab:full-component-ablation} reports the full configuration grid on held-out county-weeks.
 
 \subsection{Evaluation metrics} We measure the $week_{control}$  when $R_c$ first falls $<$ 1 (converted to a disease-control score as $1-week_{control}/26$), deception rate, vaccination and masking coverage, peak hospitalization, sender utility (benefit from recommendations) and receiver distortion (cost from deviating signals). 
 
@@ -2127,9 +2133,45 @@ All code for running simulations and reproducing results is available at: \url{h
 \section{Supplemental experimental results}
 \subsection{Comparison of adaptive and random policies across equilibria}
 \label{supp: policy_comparison}
-Across all three information regimes, the adaptive policy consistently outperforms the random policy in epidemic control, driving lower $R_c$, smaller peak hospitalization, and better receiver utility. Moreover, the overall quality of control follows the expected ordering separating $>$ partial pooling $>$ pooling, with both peak hospitalization and equilibrium deception rates smallest under separating, larger under partial pooling, and largest under pooling. 
+Across all three information regimes, the adaptive policy consistently outperforms the random policy in epidemic control, driving lower $R_c$, smaller peak hospitalization, and better receiver utility. Moreover, the overall quality of control follows the expected ordering separating $>$ partial pooling $>$ pooling, with both peak hospitalization and equilibrium deception rates smallest under separating, larger under partial pooling, and largest under pooling. Figures~\ref{fig:policy_partial_high}--\ref{fig:policy_pool_high} show the full comparison for each regime and initial-compliance setting.
 
 An interesting nuance is that when initial compliance is already high, sender utility under the random policy is often comparable to, or slightly higher than, under adaptive control—because in that regime the epidemic can be kept in check even with relatively mild, noisy recommendations, so the population “pays” less in terms of strong, targeted interventions while still enjoying reasonably low infection risk.
+
+\begin{figure*}[h]
+    \centering
+    \includegraphics[width=\textwidth, height=6cm]{figures/policy_partial_pooling_high}
+    \caption{Comparison of adaptive and random policies under partial pooling with high initial behavioral rates, across epidemic dynamics, policy actions, signaling behavior, and utilities.}
+    \label{fig:policy_partial_high} %\vspace{-4mm}
+\end{figure*}
+
+\begin{figure*}[h]
+    \centering
+    \includegraphics[width=\textwidth, height=6cm]{figures/policy_separating_low.png}
+    \caption{Comparison of adaptive and random policies under separating with low initial behavioral rates, across epidemic dynamics, policy actions, signaling behavior, and utilities.}
+    \label{fig:policy_sep_low} %\vspace{-4mm}
+\end{figure*}
+
+\begin{figure*}[h]
+    \centering
+    \includegraphics[width=\textwidth, height=6cm]{figures/policy_separating_high.png}
+    \caption{Comparison of adaptive and random policies under separating with high initial behavioral rates, across epidemic dynamics, policy actions, signaling behavior, and utilities.}
+    \label{fig:policy_sep_high} %\vspace{-4mm}
+\end{figure*}
+
+\begin{figure*}[h]
+    \centering
+    \includegraphics[width=\textwidth, height=6cm]{figures/policy_pooling_low.png}
+    \caption{Comparison of adaptive and random policies under pooling with low initial behavioral rates, across epidemic dynamics, policy actions, signaling behavior, and utilities.}
+    \label{fig:policy_pool_low} %\vspace{-4mm}
+\end{figure*}
+
+\begin{figure*}[h]
+    \centering
+    \includegraphics[width=\textwidth, height=6cm]{figures/policy_pooling_high.png}
+    \caption{Comparison of adaptive and random policies under pooling with high initial behavioral rates, across epidemic dynamics, policy actions, signaling behavior, and utilities.}
+    \label{fig:policy_pool_high} %\vspace{-4mm}
+\end{figure*}
+
 
 
 \subsection{Component-level evidence on false signals and receiver response}
@@ -2307,41 +2349,11 @@ Full framework
 
 
 
-\begin{figure*}[h]
-    \centering
-    \includegraphics[width=\textwidth, height=6cm]{figures/policy_partial_pooling_high}
-    \caption{Comparison of adaptive and random policies under partial pooling with high initial behavioral rates, across epidemic dynamics, policy actions, signaling behavior, and utilities.}
-    \label{fig:gov_policy_partial_high} %\vspace{-4mm}
-\end{figure*}
 
 
-\begin{figure*}[h]
-    \centering
-    \includegraphics[width=\textwidth, height=6cm]{figures/policy_separating_low.png}
-    \caption{Comparison of adaptive and random policies under separating with low initial behavioral rates, across epidemic dynamics, policy actions, signaling behavior, and utilities.}
-    \label{fig:gov_policy_partial_high} %\vspace{-4mm}
-\end{figure*}
 
-\begin{figure*}[h]
-    \centering
-    \includegraphics[width=\textwidth, height=6cm]{figures/policy_separating_high.png}
-    \caption{Comparison of adaptive and random policies under separating with high initial behavioral rates, across epidemic dynamics, policy actions, signaling behavior, and utilities.}
-    \label{fig:gov_policy_partial_high} %\vspace{-4mm}
-\end{figure*}
 
-\begin{figure*}[h]
-    \centering
-    \includegraphics[width=\textwidth, height=6cm]{figures/policy_pooling_low.png}
-    \caption{Comparison of adaptive and random policies under pooling with low initial behavioral rates, across epidemic dynamics, policy actions, signaling behavior, and utilities.}
-    \label{fig:gov_policy_partial_high} %\vspace{-4mm}
-\end{figure*}
 
-\begin{figure*}[h]
-    \centering
-    \includegraphics[width=\textwidth, height=6cm]{figures/policy_pooling_high.png}
-    \caption{Comparison of adaptive and random policies under pooling with high initial behavioral rates, across epidemic dynamics, policy actions, signaling behavior, and utilities.}
-    \label{fig:gov_policy_partial_high} %\vspace{-4mm}
-\end{figure*}
 
 
 % \bibliographystyle{ACM-Reference-Format}
