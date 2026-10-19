@@ -2137,24 +2137,27 @@ The framework assumes two things about the environment in which reporting happen
 false content is a real and unevenly distributed feature of it, and that receivers respond
 to signals in a way that interventions can shift. Neither assumption is testable on the
 CTIS--CDC panel, which observes aggregate coverage rather than individual messages, so we
-examine them separately on three corpora. Figure~\ref{fig:indirect_evidence} reports the
-result.
+examine them separately on three corpora, reported in Figure~\ref{fig:indirect_evidence}.
 
 Two patterns bear on the sender side. Exposure to verified-false COVID-19 content is
-highly concentrated, with Gini coefficients of $0.84$ and $0.78$ across the two corpora,
-so a small minority of items accounts for most engagement rather than false content
-spreading uniformly. Amplification also precedes deliberation: reposts of verified-false
-posts arrive at a median $7.8$\,h against $13.6$\,h for comments ($p<10^{-50}$), a gap of
+highly concentrated (Figure~\ref{fig:indirect_evidence}a): the Gini coefficient of
+per-item engagement is $0.84$ over 332 fact-checked Weibo posts with 26{,}501 timestamped
+receiver actions (CHECKED) and $0.78$ over 166 fact-checked English-language items
+(CoAID). Values near one mean exposure is dominated by a small minority of items rather
+than spread uniformly. Amplification also precedes deliberation
+(Figure~\ref{fig:indirect_evidence}b): reposts of verified-false CHECKED posts arrive at a
+median $7.8$\,h after publication against $13.6$\,h for comments ($p<10^{-50}$), a gap of
 roughly six hours during which a false signal propagates before it is discussed. Both are
 consistent with a setting in which misreporting is structured rather than idiosyncratic,
 which is the premise the sender model encodes.
 
 The third result bears on the receiver side, and it is a partial negative that we report
-as such. A randomised accuracy prime raised discernment by $+0.034$ $[0.014, 0.055]$, but
-it did so by increasing true-content sharing $+0.036$ $[-0.004, 0.075]$ rather than by
-reducing false-content sharing $+0.001$ $[-0.040, 0.042]$. Receiver behaviour is therefore
-modifiable, which the adaptive-feedback component requires, but the channel is not
-suppression of false signals.
+as such (Figure~\ref{fig:indirect_evidence}c). In a randomised accuracy prime with 855
+participants and 25{,}627 headline ratings, discernment, the difference between true- and
+false-headline sharing, rose by $+0.034$ $[0.014, 0.055]$. It did so by increasing
+true-content sharing $+0.036$ $[-0.004, 0.075]$ rather than by reducing false-content
+sharing $+0.001$ $[-0.040, 0.042]$. Receiver behaviour is therefore modifiable, which the
+adaptive-feedback component requires, but the channel is not suppression of false signals.
 
 \paragraph{What this evidence does and does not establish.}
 These corpora speak to message veracity, diffusion structure and receiver
@@ -2163,24 +2166,16 @@ alongside that same individual's report, so none validates the misreport channel
 $g(m\mid\theta)$ directly, and none identifies strategic intent. They are component-level
 support for the assumptions the framework makes about its environment, not evidence for
 the framework itself. The direct test of $g(m\mid\theta)$ is the paired
-report-versus-record analysis of Table~\ref{tab:nis-teen-validation}, and the end-to-end test
-is the CTIS--CDC evaluation in the main text.
+report-versus-record analysis of Table~\ref{tab:nis-teen-validation}, and the end-to-end
+test is the CTIS--CDC evaluation in the main text.
 
 \begin{figure}[h]
 \centering
 \includegraphics[width=\columnwidth]{figures/indirect_evidence.png}
 \vspace{-5mm}
 \caption{Component-level empirical evidence on false-signal diffusion and receiver
-response. \textbf{(a)} Concentration of verified-false COVID-19 content diffusion, as the
-Gini coefficient of per-item engagement: $0.84$ over 332 fact-checked Weibo posts with
-26{,}501 timestamped receiver actions (CHECKED) and $0.78$ over 166 fact-checked
-English-language items (CoAID). Values near one indicate exposure dominated by a small
-minority of items. \textbf{(b)} Median receiver response latency to verified-false CHECKED
-posts: reposts at $7.8$\,h after publication versus comments at $13.6$\,h
-($p<10^{-50}$). \textbf{(c)} Effect of a randomised accuracy prime on receiver sharing
-(855 participants, 25{,}627 headline ratings), with 95\% confidence intervals:
-false-headline sharing $+0.001$ $[-0.040, 0.042]$, true-headline sharing $+0.036$
-$[-0.004, 0.075]$, discernment $+0.034$ $[0.014, 0.055]$.}
+response. \textbf{(a)} Diffusion concentration. \textbf{(b)} Response latency.
+\textbf{(c)} Accuracy prime.}
 \label{fig:indirect_evidence}
 \vspace{-4mm}
 \end{figure}
