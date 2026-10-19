@@ -2171,6 +2171,37 @@ This estimator learns an audited mapping from reports and observable context to 
 \subsection{Component attribution} 
 The structured-correction ablation replaces the full estimator with report-only ridge calibration, removing contextual features and county adjustments together. It therefore measures the contribution of structured correction as a whole, not signaling incentives alone. A separate feature-matched ablation removes only the risk and incentive proxies while retaining reported coverage, time, state effects, and county adjustments. Removing SVEAIR consistency omits the isotonic projection; removing both components combines report-only calibration with no projection. Every configuration retains the same evaluation mapping and policy rule. Table~\ref{tab:full-component-ablation} reports the full configuration grid on held-out county-weeks.
 
+\begin{table*}[tp]
+\centering
+\caption{Component ablation on held-out CTIS--CDC county-weeks.
+Coverage intervals are mean $\pm1.96$ standard errors across
+30 paired audit draws. All configurations use the same
+epidemiological mapping and policy threshold for evaluation.
+Lower is better.}
+\label{tab:full-component-ablation}
+\small
+\setlength{\tabcolsep}{6pt}
+\begin{tabular}{@{}lrrr@{}}
+\toprule
+Configuration
+& Coverage error in pp [95\% interval]
+& $R_c$ error
+& Policy error \\
+\midrule
+Report-only calibration
+& 12.24 [12.18, 12.30] & 0.0724 & 0.2271 \\
+Report-only calibration + consistency
+& 12.01 [11.94, 12.08] & 0.0711 & 0.2140 \\
+Structured correction without consistency
+& 5.41 [5.37, 5.46] & 0.0320 & 0.0810 \\
+Full framework
+& \textbf{5.09 [5.04, 5.14]}
+& \textbf{0.0301}
+& \textbf{0.0754} \\
+\bottomrule
+\end{tabular}
+\end{table*}
+
 \subsection{Evaluation metrics} We measure the $week_{control}$  when $R_c$ first falls $<$ 1 (converted to a disease-control score as $1-week_{control}/26$), deception rate, vaccination and masking coverage, peak hospitalization, sender utility (benefit from recommendations) and receiver distortion (cost from deviating signals). 
 
 \subsection{Data and code}
@@ -2349,38 +2380,6 @@ Reporting channel
 
 
 Structured correction includes contextual features and county adjustments. Its replacement by report-only calibration therefore tests the full correction structure, rather than the marginal contribution of incentive features. Removing consistency omits the county-wise monotone projection during inference while retaining the common evaluation mapping.
-
-\begin{table*}[tp]
-\centering
-\caption{Component ablation on held-out CTIS--CDC county-weeks.
-Coverage intervals are mean $\pm1.96$ standard errors across
-30 paired audit draws. All configurations use the same
-epidemiological mapping and policy threshold for evaluation.
-Lower is better.}
-\label{tab:full-component-ablation}
-\small
-\setlength{\tabcolsep}{6pt}
-\begin{tabular}{@{}lrrr@{}}
-\toprule
-Configuration
-& Coverage error in pp [95\% interval]
-& $R_c$ error
-& Policy error \\
-\midrule
-Report-only calibration
-& 12.24 [12.18, 12.30] & 0.0724 & 0.2271 \\
-Report-only calibration + consistency
-& 12.01 [11.94, 12.08] & 0.0711 & 0.2140 \\
-Structured correction without consistency
-& 5.41 [5.37, 5.46] & 0.0320 & 0.0810 \\
-Full framework
-& \textbf{5.09 [5.04, 5.14]}
-& \textbf{0.0301}
-& \textbf{0.0754} \\
-\bottomrule
-\end{tabular}
-\end{table*}
-
 
 % \subsection{Stress test}
 
