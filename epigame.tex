@@ -1231,9 +1231,9 @@ Such extensions would allow us to study how misreporting itself spreads over con
 % (and NOT an unnumbered section). This ensures the proper
 % identification of the section in the article metadata, and the
 % consistent spelling of the heading.
-\begin{acks}
-\ys{Add ack}
-\end{acks}
+% \begin{acks}
+% \ys{Add ack}
+% \end{acks}
 
 
 \section*{Limitations and Ethical Considerations}
@@ -1556,17 +1556,19 @@ are
 \begin{equation}
 \begin{aligned}
 P(m = 00) &= \pi_{00} + \alpha(\pi_{01} + \pi_{10}) + \pi_{11}\\
-P(m = 01) &= (1 - \alpha)\pi_{01},\qquad
-P(m = 10) = (1 - \alpha)\pi_{10}\\
+P(m = 01) &= (1 - \alpha)\pi_{01},\\
+P(m = 10) &= (1 - \alpha)\pi_{10}\\
 P(m = 11) &= 0 \quad \text{(no one admits full non-compliance)}
 \end{aligned}
 \end{equation}
 and Bayes' rule gives, writing $Z=\pi_{00}+\alpha(\pi_{01}+\pi_{10})+\pi_{11}$,
 \begin{equation}
-q(\theta_{00}\mid 00)=\tfrac{\pi_{00}}{Z},\;\;
-q(\theta_{01}\mid 00)=\tfrac{\alpha\pi_{01}}{Z},\;\;
-q(\theta_{10}\mid 00)=\tfrac{\alpha\pi_{10}}{Z},\;\;
-q(\theta_{11}\mid 00)=\tfrac{\pi_{11}}{Z}.
+\begin{aligned}
+q(\theta_{00}\mid 00)&=\tfrac{\pi_{00}}{Z},
+& q(\theta_{01}\mid 00)&=\tfrac{\alpha\pi_{01}}{Z},\\
+q(\theta_{10}\mid 00)&=\tfrac{\alpha\pi_{10}}{Z},
+& q(\theta_{11}\mid 00)&=\tfrac{\pi_{11}}{Z}.
+\end{aligned}
 \label{eq:bayes-pool}
 \end{equation}
 A non-pooling report $m_\theta$ is sent only by type $\theta$ whenever $\alpha<1$, so it is
